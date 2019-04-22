@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Menger Sponge"
+config/name="2-Menger Sponge"
 run/main_scene="res://Menger Sponge.tscn"
 config/icon="res://icon.png"
 
