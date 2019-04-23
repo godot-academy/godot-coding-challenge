@@ -6,6 +6,7 @@ var rotate_speed = Vector3(2, 1, 1)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process(true)
+	set_process_unhandled_input(true)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -38,3 +39,16 @@ func _on_Button2_pressed():
 func _on_CheckButton_toggled(button_pressed):
 	#Simply restart
 	_restart()
+
+func _unhandled_input(event):
+	
+	#Was it a reset, split, or toggle event
+	if event is InputEventKey:
+		if event.is_action_released("reset"):
+			_restart()
+		elif event.is_action_released("split"):
+			$Segment.subdivide()
+		elif event.is_action_released("toggle"):
+			$CheckButton.pressed = !$CheckButton.pressed
+			_restart()
+		
