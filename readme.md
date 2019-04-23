@@ -6,7 +6,7 @@ This repo is a series of Godot projects inspired by the Coding Challenge series 
 
 These projects intend to implement these challenges in a simple, Godot friendly way. As such, they are not going to be 100% identical to what is done in the source material - instead there will be things like slight optimizations, different implementations, and of course a completely different syntax.
 
-Additionally, some of these challenges will be skipped, either due to not being possible or relevant, or because a more interesting challenge is done. The numbering will stay the same to align with the playlist, which means that there will likely be holes in the numbering.
+Additionally, some of these challenges will be skipped, either due to not being possible or relevant, or because a more interesting challenge caught my attention. The numbering will stay the same to align with the playlist, which means that there will likely be holes in the numbering.
 
 Finally, this repo may also have challenges inspired, but not neccesarily aligned to, the Coding Challenges playlis. They will be designated with a:
 
@@ -31,4 +31,4 @@ I would like to have my own series of Godot Coding Challenge videos that mirror 
 
 # Table of Contents
 - [Starfield](./1-starfield/)
-- [Menger Sponge](./2-megner-sponge)
+- [Menger Sponge](./2-menger-sponge)
