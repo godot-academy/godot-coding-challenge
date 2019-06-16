@@ -2,6 +2,7 @@
 
 ## What is this?
 This repo is a series of Godot projects inspired by the Coding Challenge series by [The Coding Train](https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw), the full playlist of which can be found here:
+
 [https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZiZxtDDRCi6uhfTH4FilpH](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZiZxtDDRCi6uhfTH4FilpH)
 
 These projects intend to implement these challenges in a simple, Godot friendly way. As such, they are not going to be 100% identical to what is done in the source material - instead there will be things like slight optimizations, different implementations, and of course a completely different syntax.
