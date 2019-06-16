@@ -8,14 +8,14 @@ These projects intend to implement these challenges in a simple, Godot friendly 
 
 Additionally, some of these challenges will be skipped, either due to not being possible or relevant, or because a more interesting challenge caught my attention. The numbering will stay the same to align with the playlist, which means that there will likely be holes in the numbering.
 
-Finally, this repo may also have challenges inspired, but not neccesarily aligned to, the Coding Challenges playlis. They will be designated with a:
+Finally, this repo may also have challenges inspired, but not neccesarily aligned to, the Coding Challenges playlist. They will be designated with a:
 
 >D#
 
-which represends that it is a deviation (and which deviation it is.)
+which represents that it is a deviation (and which deviation it is.)
 
 ## What is inside?
-Each project contains the source project (and all source code) and should contain a README file with a link to the Code Challenge it relates to. It may also contain helpful images, references, and videos, but it is recommended you watch the original Code Challenge for a more detailed explanaion of what is going on.
+Each project contains the source project (and all source code) and should contain a README file with a link to the Code Challenge it relates to. It may also contain helpful images, references, and videos, but it is recommended you watch the original Coding Challenge for a more detailed explanaion of what is going on.
 
 ## How do I run these?
 Each of the subdirectories is a standalone Godot project - you can check out the entire repo or just the individual challenge(s) that interest you. Boot up Godot, open the project, and hit Run!
