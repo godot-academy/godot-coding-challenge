@@ -34,3 +34,4 @@ I would like to have my own series of Godot Coding Challenge videos that mirror 
 - [Starfield](./1-starfield/)
 - [Menger Sponge](./2-menger-sponge)
 - [Snake Game](./3-snake-game)
+- [Purple Rain](./4-purple-rain)

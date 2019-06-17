@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Rain.gd" type="Script" id=1]
+
+[node name="Rain" type="Node2D"]
+position = Vector2( 0, -20 )
+script = ExtResource( 1 )
+color = Color( 0.541176, 0.168627, 0.886275, 1 )
+start_position = Vector2( 0, -20 )
