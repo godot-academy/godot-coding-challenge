@@ -6,4 +6,4 @@
 position = Vector2( 0, -20 )
 script = ExtResource( 1 )
 color = Color( 0.541176, 0.168627, 0.886275, 1 )
-start_position = Vector2( 0, -20 )
+start_position = Vector2( 0, -30 )

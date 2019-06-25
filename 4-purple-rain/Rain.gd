@@ -7,14 +7,14 @@ const base_width = 2
 const base_height = 15
 
 #Starting position and 'distance' away
-export(Vector2) var start_position = Vector2(-10, -20) setget set_start_position
+export(Vector2) var start_position = Vector2(-10, -30) setget set_start_position
 var distance_range = Vector2(0, 100)
 export(float, 0, 100) var distance = 10 setget set_distance
 export(float) var max_fall = 350
 
 #Variables to determine how fast to go and how big to be
 var _gravity = 10
-var _gravity_range = Vector2(5, 1) #'Nearest' to 'Furthest'
+var _gravity_range = Vector2(400, 80) #'Nearest' to 'Furthest'
 var _scale = 1
 var _scale_range = Vector2(1.5, 0.5) #'Nearest' to 'Furthest
 var _speed = 0
@@ -55,7 +55,7 @@ func _process(delta):
 	_speed += _gravity*delta
 	
 	#Update position
-	position.y += _speed
+	position.y += _speed*delta
 	
 	#Did we go out of bounds?
 	if position.y > max_fall:
