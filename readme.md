@@ -30,6 +30,8 @@ Probably. This isn't meant to be the pefect implementation, nor is it always goi
 ## Will you be making videos?
 I would like to have my own series of Godot Coding Challenge videos that mirror the Coding Challenge playlist, but that will be time-permitting and I don't really have a great setup for it. However, I think it would be valuable to many new developers as it would provide better insight into how to work through projects like these, as well as give opportunities for better insights than what can be entered into a README file. Also, I'm really just not very good at making videos.
 
+Any videos can be found in the [Godot Academy Coding Challenges](https://www.youtube.com/playlist?list=PLOhO-3_UuMu2O6538XTOjp9T5cdDXlCin) playlist.
+
 # Table of Contents
 - [Starfield](./1-starfield/)
 - [Menger Sponge](./2-menger-sponge)
