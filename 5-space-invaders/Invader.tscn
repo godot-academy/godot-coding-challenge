@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Area2D
+
+var movement_speed = 50
+var movement_increase = 10
+var direction = 1
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	
+	set_process(true)
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	
+	#Move!
+	var movement = movement_speed * direction * delta
+	position.x += movement
+
+func increase_speed():
+	movement_speed += movement_increase
+
+func move_down():
+	
+	#Simply jump down a bit and switch directions
+	position.y += 25
+	direction = -direction
+	increase_speed()
+
+func die():
+	#Go away!
+	queue_free()
+
+func _on_Invader_area_entered(area):
+	
+	#Did we hit a player thing?
+	if area.is_in_group(\"player\"):
+		#We gotta go away
+		die()
+	elif (area.is_in_group(\"left_wall\") and direction == -1) or \\
+			(area.is_in_group(\"right_wall\") and direction == 1):
+		#We can move down and switch direction
+		move_down()
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 16 )
+
+[node name="Invader" type="Area2D" groups=[
+"invader",
+]]
+script = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+[connection signal="area_entered" from="." to="." method="_on_Invader_area_entered"]

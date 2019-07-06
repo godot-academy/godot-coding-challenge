@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Node2D
+
+const Invader = preload(\"res://Invader.tscn\")
+
+var columns = 6
+var rows = 6
+var spacing = 50
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	
+	#Make all of the invaders
+	var start_x = 512 - (columns/2 * spacing)
+	var start_y = 100
+	for row in rows:
+		var x = start_x
+		for column in columns:
+			
+			#Spawn the invader
+			var invader = Invader.instance()
+			invader.position = Vector2(x, start_y)
+			$Board.add_child(invader)
+			
+			#Move to the next one...
+			x += spacing + 50
+		
+		#Move the next row down
+		start_y += spacing
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1, 300 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 512, 1 )
+
+[node name="Game" type="Node2D"]
+script = SubResource( 3 )
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="LeftWall" type="Area2D" parent="Walls" groups=[
+"left_wall",
+]]
+position = Vector2( 0, 300 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
+shape = SubResource( 1 )
+
+[node name="RightWall" type="Area2D" parent="Walls" groups=[
+"right_wall",
+]]
+position = Vector2( 1024, 300 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
+shape = SubResource( 1 )
+
+[node name="TopWall" type="Area2D" parent="Walls" groups=[
+"top_wall",
+]]
+position = Vector2( 512, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
+shape = SubResource( 2 )
+
+[node name="Board" type="Node2D" parent="."]
+
+[node name="Player" parent="Board" instance=ExtResource( 1 )]
+position = Vector2( 512, 550 )

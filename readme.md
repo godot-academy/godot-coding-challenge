@@ -37,3 +37,4 @@ Any videos can be found in the [Godot Academy Coding Challenges](https://www.you
 - [Menger Sponge](./2-menger-sponge)
 - [Snake Game](./3-snake-game)
 - [Purple Rain](./4-purple-rain)
+- [Space Invaders](./5-space-invaders)

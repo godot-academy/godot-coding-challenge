@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Area2D
+
+const Bullet = preload(\"res://Bullet.tscn\")
+
+var movement_speed = 100 #Pixels per second
+
+var move_left = false
+var move_right = false
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	
+	set_process_unhandled_key_input(true)
+	set_process(true)
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	
+	#Are we moving?
+	var direction = 0
+	if move_left: direction = -1
+	if move_right: direction = 1
+	
+	#Move in the direction specifed by the movement speed and adjust for framerate
+	var movement = movement_speed * direction * delta
+	position.x += movement
+	
+
+func shoot():
+	
+	#Spawn a bullet and send it at the enemy!
+	var new_bullet = Bullet.instance()
+	new_bullet.add_to_group(\"player\")
+	new_bullet.direction = -1
+	new_bullet.position = position
+	get_parent().add_child(new_bullet)
+
+func die():
+	
+	#We got hit, game over!
+	print(\"You died!\")
+	queue_free()
+
+func _unhandled_key_input(event):
+	
+	#Check what action it was
+	
+	#Set up movement responses
+	if event.is_action_pressed(\"player_left\"):
+		move_left = true
+	elif event.is_action_released(\"player_left\"):
+		move_left = false
+	
+	if event.is_action_pressed(\"player_right\"):
+		move_right = true
+	elif event.is_action_released(\"player_right\"):
+		move_right = false
+		
+	#Should we shoot?
+	if event.is_action_pressed(\"player_shoot\"):
+		shoot()
+
+func _on_Player_area_entered(area):
+	
+	#Did we hit something bad?
+	if area.is_in_group(\"invader\"):
+		#We died!
+		die()
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7, 7 )
+
+[node name="Player" type="Area2D" groups=[
+"player",
+]]
+script = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 1 )
+[connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
