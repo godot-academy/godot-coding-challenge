@@ -38,3 +38,4 @@ Any videos can be found in the [Godot Academy Coding Challenges](https://www.you
 - [Snake Game](./3-snake-game)
 - [Purple Rain](./4-purple-rain)
 - [Space Invaders](./5-space-invaders)
+- [Mitosis](./6-mitosis)
