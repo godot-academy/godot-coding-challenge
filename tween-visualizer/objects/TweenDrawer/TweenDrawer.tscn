@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://objects/TweenDrawer/TweenDrawer.cs" type="Script" id=1]
+[ext_resource path="res://objects/TweenDrawer/Dot.cs" type="Script" id=2]
+
+[node name="TweenDrawer" type="Control" groups=[
+"tween_drawer",
+]]
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Dot" type="Control" parent="."]
+margin_right = 4.0
+margin_bottom = 4.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
