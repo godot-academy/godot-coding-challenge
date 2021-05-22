@@ -32,7 +32,6 @@ margin_top = 64.0
 margin_right = 122.0
 margin_bottom = 104.0
 text = "Invert"
-
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
 [connection signal="toggled" from="CheckButton" to="." method="_on_CheckButton_toggled"]
