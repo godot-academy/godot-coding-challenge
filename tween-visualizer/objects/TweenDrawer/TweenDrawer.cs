@@ -12,8 +12,8 @@ public class TweenDrawer : Control
 	private float _progress;
 
 	private Tween _tween;
-	private Viewport _viewport;
 	public float DrawPosition;
+	private float DrawPadding { get; } = 0.9f;
 
 	[Export(PropertyHint.Range, "0,100")]
 	public float Progress
@@ -27,11 +27,10 @@ public class TweenDrawer : Control
 		}
 	}
 
-	[Export] public bool Fade { get; set; } = false;
+	[Export] public bool Fade { get; set; } = true;
 
-	[Export] public float FadeSpeed { get; set; } = 0.05f;
-
-	[Export] public float Radius { get; set; } = 3;
+	// [Export] public float FadeSpeed { get; set; } = 0.05f;
+	[Export] public byte FadeSpeed { get; set; } = 1;
 	[Export] public Color Color { get; set; } = Colors.Aqua;
 
 	[Export] public Tween.TransitionType TransitionType { get; set; } = Tween.TransitionType.Expo;
@@ -41,7 +40,6 @@ public class TweenDrawer : Control
 	{
 		_tween = GetNode("Tween") as Tween;
 		_dot = GetNode("Dot") as Control;
-		_viewport = GetTree().Root.GetViewport();
 
 		//Set up the brush
 		_brushImage = _brushTexture.GetData();
@@ -58,6 +56,7 @@ public class TweenDrawer : Control
 		// Adjust the position to be the full width of ourselves
 		var adjustedPosition = new Vector2(currentProgress, DrawPosition) * RectSize;
 		adjustedPosition.y = RectSize.y - adjustedPosition.y;
+		adjustedPosition *= DrawPadding;
 
 		//Move our Dot to this position
 		_dot.RectPosition = adjustedPosition;
@@ -77,8 +76,13 @@ public class TweenDrawer : Control
 		// Fade the previous image if selected
 		if (Fade)
 		{
-			_previousImage.Lock();
 			var imageSize = _previousImage.GetSize();
+
+			// This is slow! We don't wanna do this
+
+			// ReSharper disable once InvalidXmlDocComment
+			/**
+			_previousImage.Lock();
 			for (var x = 0; x < imageSize.x; ++x)
 			{
 				for (var y = 0; y < imageSize.y; ++y)
@@ -88,16 +92,29 @@ public class TweenDrawer : Control
 					_previousImage.SetPixel(x, y, previousPixel);
 				}
 			}
-
 			_previousImage.Unlock();
+			*/
+
+			var imageData = _previousImage.GetData();
+
+			//Every 4th byte is the alpha (RGBA)
+			for (var i = 3; i < imageData.Length; i += 4)
+			{
+				var data = imageData[i];
+				if (data < FadeSpeed) imageData[i] = 0;
+				else imageData[i] -= FadeSpeed;
+			}
+
+			_previousImage.CreateFromData((int) imageSize.x, (int) imageSize.y, false, Image.Format.Rgba8, imageData);
 		}
 
 		//Draw a circle at the given position
-		_previousImage.BlitRect(_brushImage, _brushImage.GetUsedRect(), adjustedPosition);
+		_previousImage.BlitRect(_brushImage, _brushImage.GetUsedRect(),
+			adjustedPosition - _brushImage.GetUsedRect().Size / 2);
 
 		// Draw the image
 		var imageTexture = new ImageTexture();
 		imageTexture.CreateFromImage(_previousImage);
-		DrawTexture(imageTexture, Vector2.Zero);
+		DrawTexture(imageTexture, Vector2.Zero, Color);
 	}
 }
