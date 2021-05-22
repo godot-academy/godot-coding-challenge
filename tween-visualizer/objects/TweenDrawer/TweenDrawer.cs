@@ -1,19 +1,21 @@
 using System;
+using System.Linq;
 using Godot;
 
 public class TweenDrawer : Control
 {
 	private Image _brushImage;
 	private Texture _brushTexture = ResourceLoader.Load("res://objects/TweenDrawer/brush.png") as Texture;
-	private Control _dot;
-	private Image _fadeMask;
+
+	private Color _color = Colors.Aqua;
+	private Dot _dot;
 	private Image _previousImage;
 
 	private float _progress;
 
 	private Tween _tween;
 	public float DrawPosition;
-	private float DrawPadding { get; } = 0.9f;
+	private float DrawPadding => 0.9f;
 
 	[Export(PropertyHint.Range, "0,100")]
 	public float Progress
@@ -31,7 +33,17 @@ public class TweenDrawer : Control
 
 	// [Export] public float FadeSpeed { get; set; } = 0.05f;
 	[Export] public byte FadeSpeed { get; set; } = 1;
-	[Export] public Color Color { get; set; } = Colors.Aqua;
+
+	[Export]
+	public Color Color
+	{
+		get => _color;
+		set
+		{
+			_color = value;
+			if (_dot != null) _dot.Color = _color;
+		}
+	}
 
 	[Export] public Tween.TransitionType TransitionType { get; set; } = Tween.TransitionType.Expo;
 	[Export] public Tween.EaseType EaseType { get; set; } = Tween.EaseType.In;
@@ -39,7 +51,7 @@ public class TweenDrawer : Control
 	public override void _Ready()
 	{
 		_tween = GetNode("Tween") as Tween;
-		_dot = GetNode("Dot") as Control;
+		_dot = GetNode("Dot") as Dot;
 
 		//Set up the brush
 		_brushImage = _brushTexture.GetData();
@@ -66,11 +78,6 @@ public class TweenDrawer : Control
 			// Set up the image so we can draw on it
 			_previousImage = new Image();
 			_previousImage.Create((int) RectSize.x, (int) RectSize.y, false, Image.Format.Rgba8);
-			_fadeMask = new Image();
-
-			_fadeMask.Create((int) _previousImage.GetSize().x, (int) _previousImage.GetSize().y, false,
-				Image.Format.Rgba8);
-			_fadeMask.Fill(new Color(0, 0, 0, 0.1F));
 		}
 
 		// Fade the previous image if selected
@@ -96,6 +103,7 @@ public class TweenDrawer : Control
 			*/
 
 			var imageData = _previousImage.GetData();
+			var any = imageData.Any(b => b != 0);
 
 			//Every 4th byte is the alpha (RGBA)
 			for (var i = 3; i < imageData.Length; i += 4)
@@ -105,11 +113,12 @@ public class TweenDrawer : Control
 				else imageData[i] -= FadeSpeed;
 			}
 
+			// _previousImage = new Image();
 			_previousImage.CreateFromData((int) imageSize.x, (int) imageSize.y, false, Image.Format.Rgba8, imageData);
 		}
 
 		//Draw a circle at the given position
-		_previousImage.BlitRect(_brushImage, _brushImage.GetUsedRect(),
+		_previousImage.BlendRect(_brushImage, _brushImage.GetUsedRect(),
 			adjustedPosition - _brushImage.GetUsedRect().Size / 2);
 
 		// Draw the image
