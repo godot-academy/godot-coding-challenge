@@ -11,8 +11,92 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MultiTweenDrawer" parent="." instance=ExtResource( 1 )]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 84.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="TransitionTypeOption" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 255.0
+margin_right = 381.0
+margin_bottom = 84.0
+text = "Transition Type"
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 385.0
+margin_right = 707.0
+margin_bottom = 84.0
+columns = 2
+
+[node name="EASE_IN" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_right = 159.0
+margin_bottom = 40.0
+pressed = true
+text = "EASE_IN"
+
+[node name="EASE_OUT" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_left = 163.0
+margin_right = 322.0
+margin_bottom = 40.0
+pressed = true
+text = "EASE_OUT"
+
+[node name="EASE_IN_OUT" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_top = 44.0
+margin_right = 159.0
+margin_bottom = 84.0
+pressed = true
+text = "EASE_INOUT"
+
+[node name="EASE_OUT_IN" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_left = 163.0
+margin_top = 44.0
+margin_right = 322.0
+margin_bottom = 84.0
+pressed = true
+text = "EASE_OUTIN"
+
+[node name="FadeCheck" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+margin_left = 711.0
+margin_right = 769.0
+margin_bottom = 84.0
+pressed = true
+text = "Fade"
+
+[node name="MultiTweenDrawer" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 88.0
+margin_right = 1024.0
+margin_bottom = 596.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 600.0
+margin_right = 1024.0
+margin_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="Tween" type="Tween" parent="."]
 repeat = true
 playback/repeat = true
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/TransitionTypeOption" to="." method="_on_TransitionTypeOption_item_selected"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/GridContainer/EASE_IN" to="." method="_on_EASE_toggled" binds= [ 0 ]]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/GridContainer/EASE_OUT" to="." method="_on_EASE_toggled" binds= [ 1 ]]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/GridContainer/EASE_IN_OUT" to="." method="_on_EASE_toggled" binds= [ 2 ]]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/GridContainer/EASE_OUT_IN" to="." method="_on_EASE_toggled" binds= [ 3 ]]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/FadeCheck" to="." method="_on_FadeCheck_toggled"]

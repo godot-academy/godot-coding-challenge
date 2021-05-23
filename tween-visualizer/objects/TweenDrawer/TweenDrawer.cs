@@ -4,21 +4,20 @@ using Godot;
 
 public class TweenDrawer : Control
 {
+	private const float DrawPadding = 0.9f;
+	private readonly ImageTexture _imageTexture = new ImageTexture();
 	private Image _brushImage;
 
 	private Color _color = Colors.Aqua;
 	private Dot _dot;
-	private ImageTexture _imageTexture = new ImageTexture();
 	private Image _previousImage;
 
 	private float _progress;
 
 	private Tween _tween;
 
-	// private Texture _brushTexture = ResourceLoader.Load("res://objects/TweenDrawer/brush.png") as Texture;
 	[Export(PropertyHint.Range, "1,10")] public int BrushSize = 3;
 	public float DrawPosition;
-	private float DrawPadding => 0.9f;
 
 	[Export(PropertyHint.Range, "0,100")]
 	public float Progress
@@ -35,7 +34,7 @@ public class TweenDrawer : Control
 	[Export] public bool Fade { get; set; } = true;
 
 	// [Export] public float FadeSpeed { get; set; } = 0.05f;
-	[Export] public byte FadeSpeed { get; set; } = 1;
+	[Export] public byte FadeSpeed { get; set; } = 2;
 
 	[Export]
 	public Color Color
@@ -70,7 +69,7 @@ public class TweenDrawer : Control
 		_tween.InterpolateProperty(this, "DrawPosition", 0, 1, 1, TransitionType, EaseType);
 		_tween.Seek(currentProgress);
 
-		// Adjust the position to be the full width of ourselves
+		// Adjust the position to be the full width of ourselves with some extra padding
 		var adjustedPosition = new Vector2(currentProgress, DrawPosition) * RectSize;
 		adjustedPosition.y = RectSize.y - adjustedPosition.y;
 		adjustedPosition *= DrawPadding;
@@ -107,9 +106,9 @@ public class TweenDrawer : Control
 			_previousImage.Unlock();
 			*/
 
-			var imageData = _previousImage.GetData();
 
 			//Every 4th byte is the alpha (RGBA)
+			var imageData = _previousImage.GetData();
 			for (var i = 3; i < imageData.Length; i += 4)
 			{
 				var data = imageData[i];
@@ -117,7 +116,7 @@ public class TweenDrawer : Control
 				else imageData[i] -= FadeSpeed;
 			}
 
-			// _previousImage = new Image();
+			//Create a new image from the alpha-modified data
 			_previousImage.CreateFromData((int) imageSize.x, (int) imageSize.y, false, Image.Format.Rgba8, imageData);
 		}
 
@@ -126,7 +125,15 @@ public class TweenDrawer : Control
 			adjustedPosition - _brushImage.GetUsedRect().Size / 2);
 
 		// Draw the image
+		// We have to hold onto the ImageTexture reference or else it'll get cleaned up by the GC and we get visual glitches
 		_imageTexture.CreateFromImage(_previousImage);
 		DrawTexture(_imageTexture, Vector2.Zero, Color);
+	}
+
+	public void Clear()
+	{
+		var imageSize = _previousImage.GetSize();
+		var imageData = Enumerable.Repeat((byte) 0, _previousImage.GetData().Length).ToArray();
+		_previousImage?.CreateFromData((int) imageSize.x, (int) imageSize.y, false, Image.Format.Rgba8, imageData);
 	}
 }

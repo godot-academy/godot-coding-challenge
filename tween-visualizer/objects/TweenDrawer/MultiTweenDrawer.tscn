@@ -2,7 +2,9 @@
 
 [ext_resource path="res://objects/TweenDrawer/MultiTweenDrawer.cs" type="Script" id=1]
 
-[node name="MultiTweenDrawer" type="Control"]
+[node name="MultiTweenDrawer" type="Control" groups=[
+"multi_tween_drawer",
+]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )

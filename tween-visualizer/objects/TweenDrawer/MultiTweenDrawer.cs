@@ -1,23 +1,26 @@
+using System.Collections.Generic;
 using Godot;
-using Godot.Collections;
 
 public class MultiTweenDrawer : Control
 {
 	private readonly PackedScene _drawerScene =
 		ResourceLoader.Load("res://objects/TweenDrawer/TweenDrawer.tscn") as PackedScene;
 
-	private readonly Dictionary<Tween.EaseType, Color> _easingColors = new Dictionary<Tween.EaseType, Color>
-	{
-		{Tween.EaseType.In, Colors.Green},
-		{Tween.EaseType.Out, Colors.Orange},
-		{Tween.EaseType.InOut, Colors.Purple},
-		{Tween.EaseType.OutIn, Colors.Pink}
-	};
+	private readonly Godot.Collections.Dictionary<Tween.EaseType, Color> _easingColors =
+		new Godot.Collections.Dictionary<Tween.EaseType, Color>
+		{
+			{Tween.EaseType.In, Colors.Green},
+			{Tween.EaseType.Out, Colors.Orange},
+			{Tween.EaseType.InOut, Colors.Purple},
+			{Tween.EaseType.OutIn, Colors.Pink}
+		};
 
-	private Tween.TransitionType _transitionType = Tween.TransitionType.Sine;
+	private readonly HashSet<Tween.EaseType> _ignoredEasingTypes = new HashSet<Tween.EaseType>();
+
+	Tween.TransitionType _transitionType = Tween.TransitionType.Sine;
 
 	[Export]
-	private Tween.TransitionType TransitionType
+	public Tween.TransitionType TransitionType
 	{
 		get => _transitionType;
 		set
@@ -36,15 +39,21 @@ public class MultiTweenDrawer : Control
 		}
 	}
 
+	public bool Fade
+	{
+		set
+		{
+			foreach (var child in GetChildren())
+			{
+				var node = child as TweenDrawer;
+				node.Fade = value;
+			}
+		}
+	}
+
 	public override void _Ready()
 	{
-		foreach (var easeType in _easingColors)
-		{
-			var drawer = _drawerScene.Instance() as TweenDrawer;
-			AddChild(drawer);
-			drawer.EaseType = easeType.Key;
-			drawer.Color = easeType.Value;
-		}
+		ResetDrawers();
 	}
 
 	private void SetTweenDrawers()
@@ -53,5 +62,39 @@ public class MultiTweenDrawer : Control
 		foreach (var child in GetChildren())
 			if (child is TweenDrawer drawer)
 				drawer.TransitionType = TransitionType;
+	}
+
+	public void Clear()
+	{
+		foreach (var child in GetChildren())
+			if (child is TweenDrawer drawer)
+				drawer.Clear();
+	}
+
+	public void ResetDrawers()
+	{
+		foreach (var child in GetChildren())
+		{
+			var node = child as Node;
+			RemoveChild(node);
+			node.QueueFree();
+		}
+
+		foreach (var easeType in _easingColors)
+		{
+			if (_ignoredEasingTypes.Contains(easeType.Key)) continue;
+
+			var drawer = _drawerScene.Instance() as TweenDrawer;
+			AddChild(drawer);
+			drawer.EaseType = easeType.Key;
+			drawer.Color = easeType.Value;
+		}
+	}
+
+	public void SetIgnoredEasingType(bool isIgnored, Tween.EaseType easeType)
+	{
+		if (isIgnored) _ignoredEasingTypes.Add(easeType);
+		else _ignoredEasingTypes.Remove(easeType);
+		ResetDrawers();
 	}
 }
