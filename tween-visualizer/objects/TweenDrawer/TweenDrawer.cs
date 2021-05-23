@@ -1,10 +1,10 @@
 using System;
+using System.Linq;
 using Godot;
 
 public class TweenDrawer : Control
 {
 	private Image _brushImage;
-	private Texture _brushTexture = ResourceLoader.Load("res://objects/TweenDrawer/brush.png") as Texture;
 
 	private Color _color = Colors.Aqua;
 	private Dot _dot;
@@ -14,6 +14,9 @@ public class TweenDrawer : Control
 	private float _progress;
 
 	private Tween _tween;
+
+	// private Texture _brushTexture = ResourceLoader.Load("res://objects/TweenDrawer/brush.png") as Texture;
+	[Export(PropertyHint.Range, "1,10")] public int BrushSize = 3;
 	public float DrawPosition;
 	private float DrawPadding => 0.9f;
 
@@ -54,7 +57,9 @@ public class TweenDrawer : Control
 		_dot = GetNode("Dot") as Dot;
 
 		//Set up the brush
-		_brushImage = _brushTexture.GetData();
+		_brushImage = new Image();
+		var brushData = Enumerable.Repeat<byte>(255, BrushSize * BrushSize * 4).ToArray();
+		_brushImage.CreateFromData(BrushSize, BrushSize, false, Image.Format.Rgba8, brushData);
 	}
 
 	public override void _Draw()
