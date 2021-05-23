@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Godot;
 
 public class TweenDrawer : Control
@@ -9,6 +8,7 @@ public class TweenDrawer : Control
 
 	private Color _color = Colors.Aqua;
 	private Dot _dot;
+	private ImageTexture _imageTexture = new ImageTexture();
 	private Image _previousImage;
 
 	private float _progress;
@@ -103,7 +103,6 @@ public class TweenDrawer : Control
 			*/
 
 			var imageData = _previousImage.GetData();
-			var any = imageData.Any(b => b != 0);
 
 			//Every 4th byte is the alpha (RGBA)
 			for (var i = 3; i < imageData.Length; i += 4)
@@ -122,8 +121,7 @@ public class TweenDrawer : Control
 			adjustedPosition - _brushImage.GetUsedRect().Size / 2);
 
 		// Draw the image
-		var imageTexture = new ImageTexture();
-		imageTexture.CreateFromImage(_previousImage);
-		DrawTexture(imageTexture, Vector2.Zero, Color);
+		_imageTexture.CreateFromImage(_previousImage);
+		DrawTexture(_imageTexture, Vector2.Zero, Color);
 	}
 }
