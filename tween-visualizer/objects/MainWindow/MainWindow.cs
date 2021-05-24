@@ -5,9 +5,7 @@ using Godot;
 
 public class MainWindow : Control
 {
-	private HashSet<Tween.EaseType> _ignoredEaseTypes = new HashSet<Tween.EaseType>();
-
-	private Tween.TransitionType _transitionType = Tween.TransitionType.Sine;
+	private Tween.TransitionType _transitionType = Tween.TransitionType.Linear;
 
 	private Tween _tween;
 	private List<MultiTweenDrawer> _tweenDrawers;
@@ -36,14 +34,23 @@ public class MainWindow : Control
 
 		//Transition types
 		var transitionTypeOption = FindNode("TransitionTypeOption") as OptionButton;
+		var playerTransitionTypeOption = FindNode("PlayerTransitionTypeOption") as OptionButton;
 		var transitionTypes = Enum.GetNames(typeof(Tween.TransitionType));
 		foreach (var transitionTypeName in transitionTypes)
 		{
 			transitionTypeOption?.AddItem(transitionTypeName,
 				(int) Enum.Parse(typeof(Tween.TransitionType), transitionTypeName));
+			playerTransitionTypeOption?.AddItem(transitionTypeName,
+				(int) Enum.Parse(typeof(Tween.TransitionType), transitionTypeName));
 		}
 
 		//Easing types
+		var playerEasingTypeOption = FindNode("PlayerEasingType") as OptionButton;
+		var easingTypes = Enum.GetNames(typeof(Tween.EaseType));
+		foreach (var easingType in easingTypes)
+		{
+			playerEasingTypeOption?.AddItem(easingType, (int) Enum.Parse(typeof(Tween.EaseType), easingType));
+		}
 
 		RunTweens();
 	}
@@ -56,6 +63,7 @@ public class MainWindow : Control
 		foreach (var multiTweenDrawer in _tweenDrawers)
 			_tween.InterpolateProperty(multiTweenDrawer, "Progress", 0, 100, Speed, TransitionType, EaseType);
 
+		_tween.Repeat = true;
 		_tween.Start();
 	}
 
@@ -87,5 +95,17 @@ public class MainWindow : Control
 		{
 			tweenDrawer.Fade = enabled;
 		}
+	}
+
+	public void _on_PlayerEasingType_item_selected(int choice)
+	{
+		EaseType = (Tween.EaseType) choice;
+		RunTweens();
+	}
+
+	public void _on_PlayerTransitionTypeOption_item_selected(int choice)
+	{
+		_transitionType = (Tween.TransitionType) choice;
+		RunTweens();
 	}
 }

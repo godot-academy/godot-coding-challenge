@@ -41,30 +41,38 @@ columns = 2
 [node name="EASE_IN" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_right = 159.0
 margin_bottom = 40.0
+custom_colors/font_color_pressed = Color( 0, 1, 0.227451, 1 )
 pressed = true
 text = "EASE_IN"
+align = 2
 
 [node name="EASE_OUT" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_left = 163.0
 margin_right = 322.0
 margin_bottom = 40.0
+custom_colors/font_color_pressed = Color( 1, 0.505882, 0, 1 )
 pressed = true
 text = "EASE_OUT"
+align = 2
 
 [node name="EASE_IN_OUT" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_top = 44.0
 margin_right = 159.0
 margin_bottom = 84.0
+custom_colors/font_color_pressed = Color( 0.254902, 0, 0.682353, 1 )
 pressed = true
 text = "EASE_INOUT"
+align = 2
 
 [node name="EASE_OUT_IN" type="CheckButton" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_left = 163.0
 margin_top = 44.0
 margin_right = 322.0
 margin_bottom = 84.0
+custom_colors/font_color_pressed = Color( 1, 0.52549, 0.52549, 1 )
 pressed = true
 text = "EASE_OUTIN"
+align = 2
 
 [node name="FadeCheck" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
 margin_left = 711.0
@@ -78,17 +86,31 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 88.0
 margin_right = 1024.0
-margin_bottom = 596.0
+margin_bottom = 576.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 600.0
+margin_top = 580.0
 margin_right = 1024.0
 margin_bottom = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
+
+[node name="PlayerTransitionTypeOption" type="OptionButton" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 395.0
+margin_right = 521.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( -838.732, -296.774 )
+text = "Transition Type"
+
+[node name="PlayerEasingType" type="OptionButton" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 525.0
+margin_right = 628.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( -838.732, -296.774 )
+text = "Easing Type"
 
 [node name="Tween" type="Tween" parent="."]
 repeat = true
@@ -100,3 +122,5 @@ playback/repeat = true
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/GridContainer/EASE_IN_OUT" to="." method="_on_EASE_toggled" binds= [ 2 ]]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/GridContainer/EASE_OUT_IN" to="." method="_on_EASE_toggled" binds= [ 3 ]]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/FadeCheck" to="." method="_on_FadeCheck_toggled"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer2/PlayerTransitionTypeOption" to="." method="_on_PlayerTransitionTypeOption_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer2/PlayerEasingType" to="." method="_on_PlayerEasingType_item_selected"]
